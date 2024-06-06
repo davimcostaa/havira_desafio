@@ -1,10 +1,11 @@
 import { useEffect } from "react"
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers } from './state/userSlice'
+import { fetchUsers, updatePosition } from './state/userSlice'
 import SideBar from "./components/SideBar";
 import UserItem from "./components/UserItem";
 import Form from "./components/Form";
+import { mapIcon } from "./components/MapIcon";
 import "leaflet/dist/leaflet.css";
 
 function App() {
@@ -16,6 +17,17 @@ function App() {
   const position = useSelector((state) => state.users.position);
   const isOpen = useSelector((state) => state.form.isOpen);
 
+  const changeMapCenter = (user) => {
+    dispatch(updatePosition([user?.address?.geo.lat, user?.address?.geo.lng]));
+  };
+
+  function ChangeView() {
+    const map = useMap();
+        useEffect(() => {
+            map.setView([position[0], position[1]]);
+        }, [position, dispatch]);
+        return null;
+  }
 
   useEffect(() => {
     if (userStatus === 'idle') {
@@ -33,20 +45,30 @@ function App() {
 
         <ul className='h-screen pr-2 max-h-screen w-fit overflow-y-auto custom-scrollbar flex flex-col gap-4 pb-20 mt-6'>
           {users.map((user) => (
-            <UserItem key={user.id} name={user.name} city={user.address.city} email={user.email} />
+            <UserItem key={user.id} 
+                name={user.name} 
+                city={user.address.city} 
+                email={user.email} 
+                onClick={() => changeMapCenter(user)}
+            />
           ))} 
         </ul>
 
         <div className="flex-1 flex items-center z-30 justify-center w-full h-full">
           <MapContainer scrollWheelZoom={false}
-              style={{ height: '80%', width: '100%', zIndex: 2 }} center={position} zoom={5} >
+              style={{ height: '80%', width: '100%', zIndex: 2 }} center={position} zoom={3} >
+              <ChangeView /> 
+
               <TileLayer
                 attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                 url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
               />
 
                 {users.map((user) =>
-                    <Marker position={{ lat: user?.address?.geo.lat, lng: user?.address?.geo.lng }}>
+                    <Marker 
+                        position={{ lat: user?.address?.geo.lat, lng: user?.address?.geo.lng }}
+                        icon={mapIcon}
+                        >
                     <Popup>
                      <h1>
                       {user.name}

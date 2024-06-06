@@ -12,9 +12,13 @@ const userSlice = createSlice({
     users: [],
     status: 'idle',
     error: null,
-    position: [null, null]
+    position: [null, null],
   },
-  reducers: {},
+  reducers: {
+    updatePosition: (state, action) => {
+      state.position = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(fetchUsers.pending, (state) => {
@@ -36,5 +40,7 @@ const userSlice = createSlice({
       });
   },
 });
+
+export const { updatePosition } = userSlice.actions;
 
 export default userSlice.reducer;

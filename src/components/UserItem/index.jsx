@@ -2,9 +2,9 @@ import React from 'react'
 import { MdEmail } from "react-icons/md";
 import { FaLocationDot } from "react-icons/fa6";
 
-const UserItem = ({name, email, city}) => {
+const UserItem = ({name, email, city, onClick}) => {
   return (
-    <div className='usericon-div'>
+    <div className='usericon-div' onClick={onClick}>
 
         <h3 className='text-xl text-white'>{name}</h3>
 
