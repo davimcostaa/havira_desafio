@@ -1,33 +1,36 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUsers, updatePosition } from './state/userSlice'
+import { fetchUsers, updatePosition, filterList } from './state/userSlice'
 import SideBar from "./components/SideBar";
 import UserItem from "./components/UserItem";
 import Form from "./components/Form";
-import { mapIcon } from "./components/MapIcon";
 import "leaflet/dist/leaflet.css";
+import Loader from "./components/Loader";
+import Input from "./components/Input";
+import { TbSortAscendingLetters } from "react-icons/tb";
+import Icon from "./components/Icon";
+import { mapIcon } from "./MapItems/MapIcon";
 
 function App() {
 
   const dispatch = useDispatch();
   const users = useSelector((state) => state.users.users);
+  const filteredUsers = useSelector((state) => state.users.filteredUsers);
   const userStatus = useSelector((state) => state.users.status);
   const error = useSelector((state) => state.users.error);
   const position = useSelector((state) => state.users.position);
   const isOpen = useSelector((state) => state.form.isOpen);
+  const [searchTerm, setSearchTerm] = useState('');
 
   const changeMapCenter = (user) => {
     dispatch(updatePosition([user?.address?.geo.lat, user?.address?.geo.lng]));
   };
 
-  function ChangeView() {
-    const map = useMap();
-        useEffect(() => {
-            map.setView([position[0], position[1]]);
-        }, [position, dispatch]);
-        return null;
-  }
+  useEffect(() => {
+    const filtered = users.filter(user => user.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    dispatch(filterList(filtered));
+  }, [users, searchTerm, dispatch]);
 
   useEffect(() => {
     if (userStatus === 'idle') {
@@ -35,16 +38,45 @@ function App() {
     }
   }, [userStatus, dispatch]);
 
+  const filterUsers = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const sortUsersForName = () => {
+    const sortedUsers = [...filteredUsers].sort((a, b) => {
+      if (a.name.toLowerCase() < b.name.toLowerCase()) {
+        return -1;
+      }
+      if (a.name.toLowerCase() > b.name.toLowerCase()) {
+        return 1;
+      }
+      return 0;
+    });
+    console.log(sortedUsers);
+    dispatch(filterList(sortedUsers));
+  }
+
+  function ChangeView() {
+    const map = useMap();
+        useEffect(() => {
+            map.flyTo([position[0], position[1]]);
+        }, [position, dispatch]);
+        return null;
+  }
+
   let content;
 
   if (userStatus === 'loading') {
-    content = <div>Loading...</div>;
+    content = <div className='flex w-full h-full items-center justify-center'><Loader /></div>;
   } else if (userStatus === 'succeeded') {
     content = (
       <div className="w-full h-full flex gap-6 py-4 px-8">   
-
         <ul className='h-screen pr-2 max-h-screen w-fit overflow-y-auto custom-scrollbar flex flex-col gap-4 pb-20 mt-6'>
-          {users.map((user) => (
+          <div className="flex items-center gap-2">
+            <Input onChange={(e) => filterUsers(e)} />
+            <Icon icon={<TbSortAscendingLetters  size="20" />} onClick={() => sortUsersForName()} />
+          </div>
+          {filteredUsers.map((user) => (
             <UserItem key={user.id} 
                 name={user.name} 
                 city={user.address.city} 
@@ -53,10 +85,9 @@ function App() {
             />
           ))} 
         </ul>
-
         <div className="flex-1 flex items-center z-30 justify-center w-full h-full">
           <MapContainer scrollWheelZoom={false}
-              style={{ height: '80%', width: '100%', zIndex: 2 }} center={position} zoom={3} >
+              style={{ height: '80%', width: '100%', zIndex: 2 }} center={position} zoom={5}  >
               <ChangeView /> 
 
               <TileLayer
@@ -70,9 +101,17 @@ function App() {
                         icon={mapIcon}
                         >
                     <Popup>
-                     <h1>
-                      {user.name}
-                     </h1>
+                      <div>
+                          <h1>
+                            <strong>Nome:</strong> {user.name}
+                          </h1>
+
+                          <p><strong>Rua:</strong> {user.address.street}</p>
+                          <p><strong>Número:</strong> {user.address.suite}</p>
+                          <p><strong>Cidade:</strong> {user.address.city}</p>
+                          <p><strong>Código postal:</strong> {user.address.zipcode}</p>
+                          <a>Site: {user.website}</a>
+                      </div>
                     </Popup>
                   </Marker>
                 )}

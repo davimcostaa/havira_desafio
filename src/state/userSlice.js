@@ -10,6 +10,7 @@ const userSlice = createSlice({
   name: 'users',
   initialState: {
     users: [],
+    filteredUsers: [],
     status: 'idle',
     error: null,
     position: [null, null],
@@ -17,6 +18,9 @@ const userSlice = createSlice({
   reducers: {
     updatePosition: (state, action) => {
       state.position = action.payload;
+    },
+    filterList: (state, action) => {
+      state.filteredUsers = action.payload;
     }
   },
   extraReducers: (builder) => {
@@ -27,6 +31,7 @@ const userSlice = createSlice({
       .addCase(fetchUsers.fulfilled, (state, action) => {
         state.status = 'succeeded';
         state.users = action.payload;
+        state.filteredUsers = action.payload;
         if (action.payload.length > 0 && action.payload[0].address?.geo) {
             state.position = [
               action.payload[6].address.geo.lat,
@@ -41,6 +46,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { updatePosition } = userSlice.actions;
+export const { updatePosition, filterList } = userSlice.actions;
 
 export default userSlice.reducer;
