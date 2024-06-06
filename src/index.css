@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+* {
+    font-family: "Inter", sans-serif;
+}
+
+.sidebar-icon {
+    @apply relative flex items-center justify-center 
+    h-12 w-12 mt-2 mb-2 mx-auto  
+  bg-gray-400 hover:bg-principal dark:bg-gray-800 
+  text-principal hover:text-white
+    hover:rounded-xl rounded-3xl
+    transition-all duration-300 ease-linear
+    cursor-pointer shadow-lg ;
+}
+
+.sidebar-tooltip {
+    @apply absolute w-auto p-2 m-2 min-w-max left-14 rounded-md shadow-md
+    text-white bg-gray-900 
+    text-xs font-bold 
+    transition-all duration-100 scale-0 origin-left;
+}
+
+.sidebar-hr {
+    @apply bg-gray-200 dark:bg-gray-800 
+    border border-gray-200 dark:border-gray-800 rounded-full
+    mx-2;
+}
+
+.usericon-div {
+    @apply bg-secondaryGray text-lightGray font-semibold w-[268px] h-[145px] p-4 rounded-xl shadow-xl hover:scale-95 cursor-pointer transition-all duration-200 ease-out
+}
+
+.usericon-info {
+    @apply flex flex-row items-center mt-2 gap-2
+}
+
+.usericon-icon {
+    @apply text-principal hover:text-white text-2xl
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px; 
+    height: 3px;
+}
+  
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background-color: #88e771;
+    border-radius: 4px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #0D0F11; 
+}
+  
