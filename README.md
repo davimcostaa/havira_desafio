@@ -7,6 +7,8 @@
 
 ### Aplicação em React que consome dados de uma API e exibe a localização com base nas coordenadas de latitude e longitude fornecidas.
 
+![image](https://github.com/davimcostaa/havira_desafio/assets/92067624/b9c29235-136f-49bf-a972-045c992ad444)
+
 Para usar, siga estas etapas:
 
 ```
