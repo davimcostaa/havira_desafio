@@ -11,8 +11,8 @@ const SideBar = () => {
 
   return (
     <>
-        <div className="z-20 top-0 left-0 h-screen w-16 flex flex-col
-                 bg-secondaryGray shadow-lg">
+        <div className='z-20 top-0 left-0 h-screen w-16 flex flex-col
+                 bg-secondaryGray shadow-lg'>
                     
           <Icon icon={<img src={haviraIcon} />} />
           <Icon 

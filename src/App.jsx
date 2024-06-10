@@ -70,22 +70,25 @@ function App() {
     content = <div className='flex w-full h-full items-center justify-center'><Loader /></div>;
   } else if (userStatus === 'succeeded') {
     content = (
-      <div className="w-full h-full flex gap-6 py-4 px-8">   
-        <ul className='h-screen pr-2 max-h-screen w-fit overflow-y-auto custom-scrollbar flex flex-col gap-4 pb-20 mt-6'>
-          <div className="flex items-center gap-2">
+      <div className='w-full h-full flex flex-col md:flex-row gap-6 py-4 px-8'>   
+        <ul className='h-screen pr-2 max-h-screen md:w-fit overflow-y-auto w-full custom-scrollbar items-center flex flex-col gap-4 pb-20 mt-6'>
+          <div className='flex items-center justify-center gap-2'>
             <Input onChange={(e) => filterUsers(e)} />
             <Icon icon={<TbSortAscendingLetters  size="20" />} onClick={() => sortUsersForName()} />
           </div>
-          {filteredUsers.map((user) => (
-            <UserItem key={user.id} 
-                name={user.name} 
-                city={user.address.city} 
-                email={user.email} 
-                onClick={() => changeMapCenter(user)}
-            />
-          ))} 
+          <div className='flex flex-col gap-4 items-center'>
+            {filteredUsers.map((user) => (
+              <UserItem key={user.id} 
+                  name={user.name} 
+                  city={user.address.city} 
+                  email={user.email} 
+                  onClick={() => changeMapCenter(user)}
+              />
+            ))} 
+          </div>
+
         </ul>
-        <div className="flex-1 flex items-center z-30 justify-center w-full h-full">
+        <div className='flex md:flex-1 items-center z-30 justify-center w-full h-full'>
           <MapContainer scrollWheelZoom={false}
               style={{ height: '80%', width: '100%', zIndex: 2 }} center={position} zoom={5}  >
               <ChangeView /> 
@@ -123,10 +126,10 @@ function App() {
       content = <div>{error}</div>;
     }
     return (
-        <div className="flex w-screen overflow-hidden h-screen bg-primaryGray">
-            <SideBar className="w-1/4" /> 
+        <div className='flex w-screen overflow-hidden h-screen bg-primaryGray'>
+            <SideBar className='w-1/4' /> 
       
-          <div className="z-10 flex-1">
+          <div className='z-10 flex-1'>
             {!isOpen ? content : <Form />} 
             
           </div>

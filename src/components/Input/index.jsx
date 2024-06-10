@@ -5,8 +5,7 @@ const Input = ({onChange}) => {
     <div className={`flex flex-col gap-2`}>
         <input 
             onChange={onChange}
-            className={`bg-secondaryGray text-white border-2 h-8 appearance-none rounded
-                        border-lightGray focus:outline-none focus:border-principal`}
+            className={`input-base`}
                         />
     </div>
   )

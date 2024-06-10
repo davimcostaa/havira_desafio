@@ -30,9 +30,9 @@ const Form = () => {
   const onSubmit = data => console.log(data);
 
   return (
-    <div className="fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-primaryGray bg-opacity-50">
-      <div className="bg-secondaryGray w-2/6 h-5/6 text-white p-6 rounded-lg shadow-md ">
-        <h2 className="text-xl font-bold mb-4">Cadastro de usuários</h2>
+    <div className='fixed top-0 left-0 right-0 bottom-0 flex justify-center items-center bg-primaryGray bg-opacity-50'>
+      <div className='bg-secondaryGray w-2/6 h-5/6 text-white p-6 rounded-lg shadow-md'>
+        <h2 className='text-xl font-bold mb-4'>Cadastro de usuários</h2>
        
         <form className='flex flex-col h-full gap-3' onSubmit={handleSubmit(onSubmit)}>
 
